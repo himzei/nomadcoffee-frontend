@@ -1,6 +1,4 @@
 import { gql, useMutation } from "@apollo/client";
-import { faInstagram } from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
@@ -13,13 +11,7 @@ import PageTitle from "../components/PageTitle";
 import { FatLink } from "../components/shared";
 import routes from "../routes";
 import FormError from "../components/auth/FormError";
-import {
-  DesignContainer,
-  DesignTextFront,
-  DesignLogo,
-  DesignTextTail,
-} from "../components/shared";
-import { faCoffee } from "@fortawesome/free-solid-svg-icons";
+import Logo from "../components/Logo";
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -97,13 +89,7 @@ function SingUp() {
       <PageTitle title="Sign up" />
       <FormBox>
         <HeaderContainer>
-          <DesignContainer>
-            <DesignTextFront>Nomad</DesignTextFront>
-            <DesignLogo>
-              <FontAwesomeIcon icon={faCoffee} size="2x" color="#40407a" />
-            </DesignLogo>
-            <DesignTextTail>Coffee</DesignTextTail>
-          </DesignContainer>
+          <Logo />
           <Subtitle>
             Sign up to see photos and videos from your friends.
           </Subtitle>

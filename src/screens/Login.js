@@ -1,7 +1,4 @@
-import {
-  faFacebookSquare,
-  faInstagram,
-} from "@fortawesome/free-brands-svg-icons";
+import { faFacebookSquare } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import routes from "../routes";
@@ -17,13 +14,7 @@ import FormError from "../components/auth/FormError";
 import { gql, useMutation } from "@apollo/client";
 import { logUserIn } from "../apollo";
 import { useLocation } from "react-router-dom";
-import { faCoffee } from "@fortawesome/free-solid-svg-icons";
-import {
-  DesignContainer,
-  DesignTextFront,
-  DesignLogo,
-  DesignTextTail,
-} from "../components/shared";
+import Logo from "../components/Logo";
 
 const FacebookLogin = styled.div`
   color: #385285;
@@ -95,13 +86,7 @@ function Login() {
     <AuthLayout>
       <PageTitle title="Login" />
       <FormBox>
-        <DesignContainer>
-          <DesignTextFront>Nomad</DesignTextFront>
-          <DesignLogo>
-            <FontAwesomeIcon icon={faCoffee} size="2x" color="#40407a" />
-          </DesignLogo>
-          <DesignTextTail>Coffee</DesignTextTail>
-        </DesignContainer>
+        <Logo />
         <Notification>{locationMessage?.state?.message}</Notification>
         <form onSubmit={handleSubmit(onSubmitValid)}>
           <Input
