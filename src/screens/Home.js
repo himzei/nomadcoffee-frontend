@@ -109,7 +109,7 @@ function Home() {
 
   return (
     <div>
-      <Border />
+      {data?.seeCoffeeShops ? <Border /> : null}
       {data?.seeCoffeeShops?.map((shop) => (
         <ShopContainer key={shop.id}>
           <PhotoFile src={shop.photos[0]?.url} />
