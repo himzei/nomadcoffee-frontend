@@ -5,7 +5,7 @@ import Input from "../components/auth/Input";
 import PageTitle from "../components/PageTitle";
 import Button from "../components/auth/Button";
 import { gql, useMutation } from "@apollo/client";
-import PropTypes from "prop-types";
+
 import FormError from "../components/auth/FormError";
 
 const CREATE_COFFEE_SHOP_MUTATION = gql`
@@ -14,7 +14,7 @@ const CREATE_COFFEE_SHOP_MUTATION = gql`
     $latitude: String!
     $longitude: String!
     $category: String
-    $file: Uplaod
+    $file: Upload
   ) {
     createCoffeeShop(
       name: $name
@@ -29,23 +29,19 @@ const CREATE_COFFEE_SHOP_MUTATION = gql`
   }
 `;
 
-function AddShop() {
-  const { register, handleSubmit, setError, errors, formState } = useForm({
-    mode: "onChange",
-  });
+function AddShop({ name }) {
   const onCompleted = (data) => {
-    const {
-      createCoffeeShop: { ok, error },
-    } = data;
-    if (!ok) {
-      return setError("result", { message: error });
-    }
+    const a = data;
+    console.log(a);
   };
   const [
     createCoffeeShopMutation,
     { loading },
   ] = useMutation(CREATE_COFFEE_SHOP_MUTATION, { onCompleted });
-  const onValid = (data) => {
+  const { register, handleSubmit, errors, formState } = useForm({
+    mode: "onChange",
+  });
+  const onSubmitValid = (data) => {
     if (loading) {
       return;
     }
@@ -55,15 +51,14 @@ function AddShop() {
       },
     });
   };
+
   return (
     <AuthLayout>
       <PageTitle title="Create Shop" />
       <FormBox>
-        <form onSubmit={handleSubmit(onValid)}>
+        <form onSubmit={handleSubmit(onSubmitValid)}>
           <Input
-            ref={register({
-              required: "Shop name is required",
-            })}
+            ref={register}
             name="name"
             type="text"
             placeholder="Shop Name"
@@ -110,12 +105,12 @@ function AddShop() {
   );
 }
 
-AddShop.propTypes = {
-  name: PropTypes.string.isRequired,
-  latitude: PropTypes.string.isRequired,
-  longitude: PropTypes.string.isRequired,
-  category: PropTypes.string,
-  file: PropTypes.string,
-};
+// AddShop.propTypes = {
+//   name: PropTypes.string.isRequired,
+//   latitude: PropTypes.string.isRequired,
+//   longitude: PropTypes.string.isRequired,
+//   category: PropTypes.string,
+//   file: PropTypes.string,
+// };
 
 export default AddShop;

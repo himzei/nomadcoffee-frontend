@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Avatar from "../components/Avatar";
 import { FatText } from "../components/shared";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 
 const FEED_QUERY = gql`
   query seeCoffeeShops {
@@ -116,8 +117,12 @@ function Home() {
             <div>
               <ShopHeader>
                 <div>
-                  <Avatar lg url={shop.user.avatarURL} />
-                  <Username>{shop.user.username}</Username>
+                  <Link to={`/users/${shop.user.username}`}>
+                    <Avatar lg url={shop.user.avatarURL} />
+                  </Link>
+                  <Link to={`/users/${shop.user.username}`}>
+                    <Username>{shop.user.username}</Username>
+                  </Link>
                 </div>
                 <div>
                   <FontAwesomeIcon icon={faHeart} size="lg" />
@@ -126,7 +131,7 @@ function Home() {
               <ShopTitle>{shop.name}</ShopTitle>
               <ShopCategories>
                 {shop.categories?.map((category) => (
-                  <span>{category.name}</span>
+                  <span key={category.id}>{category.name}</span>
                 ))}
               </ShopCategories>
               <ShopAddress>

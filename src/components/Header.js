@@ -59,21 +59,24 @@ function Header() {
         <Column>
           {isLoggedIn ? (
             <IconContainer>
-              <Link to={routes.home}>
-                <Icon>
+              <Icon>
+                <Link to={routes.home}>
                   <FontAwesomeIcon icon={faHome} size="lg" />
-                </Icon>
-              </Link>
-              <Link to={routes.add}>
-                <Icon>
+                </Link>
+              </Icon>
+              <Icon>
+                <Link to={routes.add}>
                   <FontAwesomeIcon icon={faPen} size="lg" />
-                </Icon>
-              </Link>
+                </Link>
+              </Icon>
               <Icon>
                 <FontAwesomeIcon icon={faCompass} size="lg" />
               </Icon>
+
               <Icon>
-                <Avatar url={data?.me?.avatarURL} />
+                <Link to={`/users/${data?.me?.username}`}>
+                  <Avatar url={data?.me?.avatarURL} />
+                </Link>
               </Icon>
             </IconContainer>
           ) : (
