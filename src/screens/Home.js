@@ -66,7 +66,7 @@ const ShopHeader = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 5px 10px;
+  padding: 5px 15px;
   display: flex;
   align-items: center;
   div {
@@ -78,17 +78,17 @@ const ShopHeader = styled.div`
 const ShopTitle = styled(FatText)`
   font-size: 20px;
   font-style: italic;
-  padding: 5px 10px;
+  padding: 5px 15px;
 `;
 
 const ShopCategories = styled.div`
   font-size: 12px;
-  padding: 1px 10px;
+  padding: 1px 15px;
   opacity: 0.8;
 `;
 
 const ShopAddress = styled.div`
-  padding: 5px 10px;
+  padding: 5px 15px;
 `;
 
 const ShopRank = styled.span`

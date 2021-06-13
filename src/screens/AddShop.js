@@ -6,6 +6,16 @@ import PageTitle from "../components/PageTitle";
 import Button from "../components/auth/Button";
 import { gql, useMutation } from "@apollo/client";
 import FormError from "../components/auth/FormError";
+import { useHistory } from "react-router-dom";
+import { useState } from "react";
+import { uploadVar } from "../apollo";
+import { useReactiveVar } from "@apollo/client";
+import styled from "styled-components";
+
+const Img = styled.img`
+  margin-top: 10px;
+  max-width: 300px;
+`;
 
 const CREATE_COFFEE_SHOP_MUTATION = gql`
   mutation createCoffeeShop(
@@ -13,14 +23,14 @@ const CREATE_COFFEE_SHOP_MUTATION = gql`
     $latitude: String!
     $longitude: String!
     $category: String
-    $file: Upload
+    $photos: Upload
   ) {
     createCoffeeShop(
       name: $name
       latitude: $latitude
       longitude: $longitude
       category: $category
-      file: $file
+      photos: $photos
     ) {
       ok
       error
@@ -29,12 +39,20 @@ const CREATE_COFFEE_SHOP_MUTATION = gql`
 `;
 
 function AddShop() {
+  const history = useHistory();
   const { register, handleSubmit, errors, formState } = useForm({
     mode: "onChange",
   });
 
   const onCompleted = (data) => {
-    console.log(data);
+    const {
+      createCoffeeShop: { ok },
+    } = data;
+    if (!ok) {
+      console.log(data);
+      return;
+    }
+    history.push("/");
   };
 
   const [
@@ -42,31 +60,40 @@ function AddShop() {
     { loading },
   ] = useMutation(CREATE_COFFEE_SHOP_MUTATION, { onCompleted });
 
+  const [preview, setPreview] = useState(null);
+  const isUploaded = useReactiveVar(uploadVar);
+
+  let photoFile;
+
+  const onPhotoChange = (e) => {
+    const {
+      target: {
+        files: [file],
+      },
+    } = e;
+    photoFile = file;
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setPreview(reader.result);
+      uploadVar(true);
+    };
+  };
+
   const onSubmitValid = (data) => {
     if (loading) {
       return;
     }
-    const { name, latitude, longitude, category, photos } = data;
-    if (photos.length === 0) {
-      createCoffeeShopMutation({
-        variables: {
-          name,
-          latitude,
-          longitude,
-          category,
-        },
-      });
-    } else {
-      createCoffeeShopMutation({
-        variables: {
-          name,
-          latitude,
-          longitude,
-          category,
-          photos,
-        },
-      });
-    }
+
+    createCoffeeShopMutation({
+      variables: {
+        name: data.name,
+        latitude: data.latitude,
+        longitude: data.longitude,
+        category: data.category,
+        photos: photoFile,
+      },
+    });
   };
 
   return (
@@ -109,7 +136,15 @@ function AddShop() {
             placeholder="Category"
           />
           <FormError message={errors?.category?.message} />
-          <Input ref={register} type="file" name="photos" accept="image/*" />
+          <Input
+            ref={register}
+            type="file"
+            name="photos"
+            onChange={onPhotoChange}
+            multiple
+            accept="image/*"
+          />
+          {isUploaded ? <Img src={preview} alt="preview" /> : null}
           <Button
             type="submit"
             value={loading ? "loading..." : "Create Shop"}
