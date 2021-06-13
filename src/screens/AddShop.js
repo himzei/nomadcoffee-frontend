@@ -5,7 +5,6 @@ import Input from "../components/auth/Input";
 import PageTitle from "../components/PageTitle";
 import Button from "../components/auth/Button";
 import { gql, useMutation } from "@apollo/client";
-
 import FormError from "../components/auth/FormError";
 
 const CREATE_COFFEE_SHOP_MUTATION = gql`
@@ -29,27 +28,45 @@ const CREATE_COFFEE_SHOP_MUTATION = gql`
   }
 `;
 
-function AddShop({ name }) {
+function AddShop() {
+  const { register, handleSubmit, errors, formState } = useForm({
+    mode: "onChange",
+  });
+
   const onCompleted = (data) => {
-    const a = data;
-    console.log(a);
+    console.log(data);
   };
+
   const [
     createCoffeeShopMutation,
     { loading },
   ] = useMutation(CREATE_COFFEE_SHOP_MUTATION, { onCompleted });
-  const { register, handleSubmit, errors, formState } = useForm({
-    mode: "onChange",
-  });
+
   const onSubmitValid = (data) => {
     if (loading) {
       return;
     }
-    createCoffeeShopMutation({
-      variables: {
-        ...data,
-      },
-    });
+    const { name, latitude, longitude, category, photos } = data;
+    if (photos.length === 0) {
+      createCoffeeShopMutation({
+        variables: {
+          name,
+          latitude,
+          longitude,
+          category,
+        },
+      });
+    } else {
+      createCoffeeShopMutation({
+        variables: {
+          name,
+          latitude,
+          longitude,
+          category,
+          photos,
+        },
+      });
+    }
   };
 
   return (
@@ -58,7 +75,9 @@ function AddShop({ name }) {
       <FormBox>
         <form onSubmit={handleSubmit(onSubmitValid)}>
           <Input
-            ref={register}
+            ref={register({
+              required: "name is required",
+            })}
             name="name"
             type="text"
             placeholder="Shop Name"
@@ -90,9 +109,7 @@ function AddShop({ name }) {
             placeholder="Category"
           />
           <FormError message={errors?.category?.message} />
-          <Input ref={register} type="file" name="file" />
-          <FormError message={errors?.file?.message} />
-
+          <Input ref={register} type="file" name="photos" accept="image/*" />
           <Button
             type="submit"
             value={loading ? "loading..." : "Create Shop"}

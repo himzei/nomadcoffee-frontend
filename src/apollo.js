@@ -10,6 +10,7 @@ const TOKEN = "token";
 const DARK_MODE = "DARK_MODE";
 
 export const isLoggedInVar = makeVar(Boolean(localStorage.getItem(TOKEN)));
+export const uploadVar = makeVar(false);
 
 export const logUserIn = (token) => {
   localStorage.setItem(TOKEN, token);
