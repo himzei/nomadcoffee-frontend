@@ -31,7 +31,7 @@ function Logo() {
       <DesignLogo>
         <FontAwesomeIcon icon={faCoffee} size="2x" color="#40407a" />
       </DesignLogo>
-      <DesignTextTail>Coffee</DesignTextTail>
+      <DesignTextTail>Cafe</DesignTextTail>
     </DesignContainer>
   );
 }
