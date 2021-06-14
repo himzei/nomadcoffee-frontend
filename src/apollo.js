@@ -46,6 +46,7 @@ const httpLink = createHttpLink({
 const authLink = setContext((_, { headers }) => {
   return {
     headers: {
+      "Content-Type": "text/xml",
       ...headers,
       token: localStorage.getItem(TOKEN),
     },
