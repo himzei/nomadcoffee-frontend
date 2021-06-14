@@ -47,7 +47,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      "Access-Control-Allow-Origin": "https://nomadcoffee-himzei.netlify.app",
+
       token: localStorage.getItem(TOKEN),
     },
   };
